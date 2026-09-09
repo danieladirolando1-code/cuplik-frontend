@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cuplik — Video panjang jadi klip yang ditonton habis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14171C;
+    --panel:#1B1F27;
+    --panel-2:#20242D;
+    --line:#2A2F3A;
+    --text:#F3F4F1;
+    --muted:#9096A1;
+    --amber:#FFC53D;
+    --teal:#35D0BA;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Sora',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;
+    letter-spacing:0.01em;
+    line-height:0.95;
+    margin:0;
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* Header */
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 24px;
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:800;font-size:28px;color:var(--text);
+    display:flex;align-items:baseline;gap:6px;
+  }
+  .logo span{color:var(--amber);}
+  nav a{
+    color:var(--muted);text-decoration:none;font-size:15px;margin-left:28px;
+  }
+  nav a:hover{color:var(--text);}
+
+  /* Hero */
+  .hero{padding:64px 24px 40px;}
+  .hero-inner{max-width:1080px;margin:0 auto;}
+  .eyebrow-free{color:var(--teal);font-size:15px;margin-bottom:14px;font-weight:600;}
+  h1.headline{
+    font-size:clamp(38px,6vw,64px);
+    max-width:14ch;
+    margin-bottom:22px;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:18px;
+    max-width:46ch;
+    margin-bottom:32px;
+  }
+
+  .input-row{
+    display:flex;gap:10px;flex-wrap:wrap;
+    max-width:640px;
+  }
+  .input-row input{
+    flex:1;min-width:220px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    color:var(--text);
+    padding:15px 16px;
+    border-radius:10px;
+    font-size:15px;
+    font-family:'Sora',sans-serif;
+  }
+  .input-row input::placeholder{color:#5C6270;}
+  .input-row input:focus{outline:2px solid var(--amber);outline-offset:1px;}
+  .btn{
+    background:var(--amber);
+    color:#141414;
+    border:none;
+    padding:15px 24px;
+    border-radius:10px;
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .btn:hover{filter:brightness(1.08);}
+  .btn:disabled{opacity:0.55;cursor:not-allowed;}
+  .status-line{
+    margin-top:16px;font-size:14px;color:var(--teal);min-height:20px;
+  }
+
+  /* Timeline hero art */
+  .timeline{
+    margin-top:56px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:26px 24px 20px;
+  }
+  .ruler{
+    display:flex;justify-content:space-between;
+    font-size:11px;color:#5C6270;
+    font-variant-numeric:tabular-nums;
+    margin-bottom:10px;
+  }
+  .track{
+    position:relative;
+    height:46px;
+    background:repeating-linear-gradient(90deg,#262B35 0 1px,transparent 1px 40px);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .seg{
+    position:absolute;top:0;bottom:0;
+    background:linear-gradient(180deg,rgba(255,197,61,0.9),rgba(255,197,61,0.55));
+    border-radius:4px;
+  }
+  .seg::after{
+    content:attr(data-label);
+    position:absolute;left:8px;top:50%;transform:translateY(-50%);
+    font-size:11px;font-weight:700;color:#14171C;white-space:nowrap;
+  }
+  .seg1{left:14%;width:9%;}
+  .seg2{left:41%;width:13%;}
+  .seg3{left:72%;width:8%;}
+
+  /* Steps */
+  .section{padding:72px 24px;}
+  .section h2{font-size:clamp(28px,4vw,38px);max-width:16ch;margin-bottom:44px;}
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  @media (max-width:760px){.steps{grid-template-columns:1fr;}}
+  .step{border-top:2px solid var(--line);padding-top:16px;}
+  .step .num{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-size:40px;font-weight:800;color:var(--amber);
+    display:block;margin-bottom:8px;
+  }
+  .step h3{font-size:19px;font-family:'Sora',sans-serif;font-weight:700;margin-bottom:8px;}
+  .step p{color:var(--muted);font-size:15px;margin:0;}
+
+  /* Features - asymmetric list, not cards */
+  .features{display:flex;flex-direction:column;}
+  .feature{
+    display:grid;grid-template-columns:180px 1fr;gap:24px;
+    padding:22px 0;border-bottom:1px solid var(--line);
+  }
+  .feature:first-child{border-top:1px solid var(--line);}
+  @media (max-width:640px){.feature{grid-template-columns:1fr;gap:6px;}}
+  .feature .label{
+    font-family:'Big Shoulders Display',sans-serif;
+    font-weight:700;font-size:20px;color:var(--teal);
+  }
+  .feature p{margin:0;color:var(--muted);font-size:15px;max-width:52ch;}
+
+  /* Results */
+  #results-section{display:none;padding:20px 24px 80px;}
+  .results-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:20px;margin-top:28px;
+  }
+  .clip-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    overflow:hidden;
+  }
+  .clip-thumb{
+    aspect-ratio:9/16;background:var(--panel-2);
+    display:flex;align-items:center;justify-content:center;
+    color:#4B505C;font-size:13px;
+  }
+  .clip-body{padding:14px 16px 18px;}
+  .clip-body h4{margin:0 0 6px;font-size:16px;font-family:'Sora',sans-serif;font-weight:700;}
+  .clip-body p{margin:0 0 14px;color:var(--muted);font-size:13px;}
+  .clip-body a.dl{
+    display:inline-block;color:#14171C;background:var(--teal);
+    padding:9px 14px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:28px 24px;color:var(--muted);font-size:13px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Cuplik<span>.</span></div>
+  <nav>
+    <a href="#cara-kerja">Cara kerja</a>
+    <a href="#fitur">Fitur</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow-free">Video YouTube → klip vertikal, otomatis</div>
+    <h1 class="headline">Video panjang jadi klip pendek yang ditonton sampai habis.</h1>
+    <p class="sub">Tempel link YouTube. AI mendengarkan seluruh isi video, menemukan momen dengan hook paling kuat, lalu memotongnya jadi klip vertikal siap unggah.</p>
+
+    <div class="input-row">
+      <input id="yt-url" type="text" placeholder="Tempel link video YouTube di sini" />
+      <button class="btn" id="process-btn">Cari Klip Terbaik</button>
+    </div>
+    <div class="status-line" id="status"></div>
+
+    <div class="timeline" aria-hidden="true">
+      <div class="ruler"><span>00:00</span><span>05:00</span><span>10:00</span><span>15:00</span><span>20:00</span></div>
+      <div class="track">
+        <div class="seg seg1" data-label="Hook kuat"></div>
+        <div class="seg seg2" data-label="Momen viral"></div>
+        <div class="seg seg3" data-label="Punchline"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="cara-kerja">
+  <div class="wrap">
+    <h2>Tiga langkah, tanpa buka software edit.</h2>
+    <div class="steps">
+      <div class="step">
+        <span class="num">01</span>
+        <h3>Tempel link</h3>
+        <p>Salin URL video YouTube yang mau kamu potong jadi klip pendek.</p>
+      </div>
+      <div class="step">
+        <span class="num">02</span>
+        <h3>AI dengar & analisis</h3>
+        <p>Seluruh isi video ditranskrip, lalu dianalisis untuk menemukan bagian dengan hook paling kuat.</p>
+      </div>
+      <div class="step">
+        <span class="num">03</span>
+        <h3>Unduh klip vertikal</h3>
+        <p>Dapatkan beberapa klip rasio 9:16, lengkap dengan alasan kenapa momen itu dipilih.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="fitur" style="padding-top:0;">
+  <div class="wrap">
+    <h2>Yang dikerjakan Cuplik di belakang layar.</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="label">Transkrip penuh</div>
+        <p>AI mendengarkan setiap kalimat dalam video — bukan cuma membaca judul atau deskripsi.</p>
+      </div>
+      <div class="feature">
+        <div class="label">Deteksi hook</div>
+        <p>Mencari momen dengan potensi menahan perhatian penonton di detik-detik pertama.</p>
+      </div>
+      <div class="feature">
+        <div class="label">Format vertikal</div>
+        <p>Klip otomatis dipotong ke rasio 9:16 — tidak perlu crop manual satu per satu.</p>
+      </div>
+      <div class="feature">
+        <div class="label">Beberapa pilihan</div>
+        <p>Dari satu video panjang, dapat beberapa kandidat klip berbeda sekaligus untuk dibandingkan.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results-section" class="wrap">
+  <h2 style="font-size:26px;">Klip hasil AI</h2>
+  <div class="results-grid" id="results-grid"></div>
+</section>
+
+<footer>
+  <div>Cuplik — dibuat untuk kreator yang tidak sempat duduk edit semalaman.</div>
+  <div>Proses berjalan di server; hasil tergantung isi video sumber.</div>
+</footer>
+
+<script>
+  // GANTI dengan URL backend kamu setelah deploy ke Render, contoh:
+  // const API_BASE_URL = "https://cuplik-backend.onrender.com";
+  const API_BASE_URL = "https://cuplik-backend.onrender.com";
+
+  const btn = document.getElementById("process-btn");
+  const input = document.getElementById("yt-url");
+  const statusEl = document.getElementById("status");
+  const resultsSection = document.getElementById("results-section");
+  const resultsGrid = document.getElementById("results-grid");
+
+  const loadingMessages = [
+    "Mengunduh audio...",
+    "Mendengarkan isi video...",
+    "Mencari momen paling menarik...",
+    "Memotong video jadi klip vertikal..."
+  ];
+
+  function cycleStatus(){
+    let i = 0;
+    statusEl.textContent = loadingMessages[0];
+    return setInterval(() => {
+      i = (i + 1) % loadingMessages.length;
+      statusEl.textContent = loadingMessages[i];
+    }, 3500);
+  }
+
+  btn.addEventListener("click", async () => {
+    const url = input.value.trim();
+    if (!url) {
+      statusEl.textContent = "Tempel link YouTube dulu, ya.";
+      return;
+    }
+
+    btn.disabled = true;
+    resultsSection.style.display = "none";
+    const interval = cycleStatus();
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/process`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ youtube_url: url })
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || `Server merespons status ${res.status}`);
+      }
+
+      const data = await res.json();
+      clearInterval(interval);
+      statusEl.textContent = "";
+      renderResults(data.clips || []);
+    } catch (err) {
+      clearInterval(interval);
+      statusEl.textContent = "Gagal memproses video: " + err.message;
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  function renderResults(clips){
+    resultsGrid.innerHTML = "";
+    if (!clips.length){
+      statusEl.textContent = "Tidak ada klip yang bisa dihasilkan dari video ini.";
+      return;
+    }
+    clips.forEach(clip => {
+      const card = document.createElement("div");
+      card.className = "clip-card";
+      card.innerHTML = `
+        <div class="clip-thumb">Klip vertikal</div>
+        <div class="clip-body">
+          <h4>${clip.title || "Klip"}</h4>
+          <p>${clip.reason || ""}</p>
+          <a class="dl" href="${API_BASE_URL}${clip.download_url}" download>Unduh</a>
+        </div>`;
+      resultsGrid.appendChild(card);
+    });
+    resultsSection.style.display = "block";
+    resultsSection.scrollIntoView({behavior:"smooth"});
+  }
+</script>
+
+</body>
+</html>
